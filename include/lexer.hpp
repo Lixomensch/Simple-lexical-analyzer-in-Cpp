@@ -6,6 +6,8 @@
 #include <string>
 #include <unordered_set>
 
+using namespace std;
+
 // Definição dos tipos de tokens
 enum class TokenType
 {
@@ -21,24 +23,24 @@ enum class TokenType
 // Estrutura para armazenar um token
 struct Token
 {
-    std::string value;
+    string value;
     TokenType type;
 };
 
 class Lexer
 {
 public:
-    Lexer(const std::string &source);
-    std::vector<Token> tokenize();
+    Lexer(const string &source);
+    vector<Token> tokenize();
 
 private:
-    std::string source;
+    string source;
     size_t index;
-    std::vector<Token> tokens;
+    vector<Token> tokens;
 
     void processToken();
-    TokenType classifyToken(const std::string &token);
-    bool isNumber(const std::string &s);
+    TokenType classifyToken(const string &token);
+    bool isNumber(const string &s);
 };
 
 #endif // LEXER_HPP

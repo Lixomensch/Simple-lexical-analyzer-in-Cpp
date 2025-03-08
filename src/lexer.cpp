@@ -1,15 +1,14 @@
 #include "../include/lexer.hpp"
 #include <cctype>
-#include <unordered_set>
 #include <algorithm>
 
-const std::unordered_set<std::string> keywords = {"if", "else", "while", "int", "float"};
-const std::unordered_set<std::string> operators = {"+", "-", "*", "/", "=", "!=", "<=", ">="};
-const std::unordered_set<char> punctuation = {'(', ')', '{', '}', ';'};
+const unordered_set<string> keywords = {"if", "else", "while", "int", "float"};
+const unordered_set<string> operators = {"+", "-", "*", "/", "=", "!=", "<=", ">="};
+const unordered_set<char> punctuation = {'(', ')', '{', '}', ';'};
 
-Lexer::Lexer(const std::string &source) : source(source), index(0) {}
+Lexer::Lexer(const string &source) : source(source), index(0) {}
 
-std::vector<Token> Lexer::tokenize()
+vector<Token> Lexer::tokenize()
 {
     while (index < source.size())
     {
@@ -20,7 +19,7 @@ std::vector<Token> Lexer::tokenize()
 
 void Lexer::processToken()
 {
-    while (index < source.size() && std::isspace(source[index]))
+    while (index < source.size() && isspace(source[index]))
     {
         ++index;
     }
@@ -28,18 +27,27 @@ void Lexer::processToken()
     if (index >= source.size())
         return;
 
-    std::string current;
-    if (std::isalpha(source[index]))
+    if (source[index] == '/' && index + 1 < source.size() && source[index + 1] == '/')
     {
-        while (index < source.size() && (std::isalnum(source[index]) || source[index] == '_'))
+        while (index < source.size() && source[index] != '\n')
+        {
+            ++index;
+        }
+        return;
+    }
+
+    string current;
+    if (isalpha(source[index]))
+    {
+        while (index < source.size() && (isalnum(source[index]) || source[index] == '_'))
         {
             current += source[index++];
         }
         tokens.push_back({current, classifyToken(current)});
     }
-    else if (std::isdigit(source[index]))
+    else if (isdigit(source[index]))
     {
-        while (index < source.size() && (std::isdigit(source[index]) || source[index] == '.'))
+        while (index < source.size() && (isdigit(source[index]) || source[index] == '.'))
         {
             current += source[index++];
         }
@@ -58,7 +66,7 @@ void Lexer::processToken()
     }
     else
     {
-        std::string op(1, source[index]);
+        string op(1, source[index]);
         if (index + 1 < source.size() && operators.count(op + source[index + 1]))
         {
             op += source[++index];
@@ -68,7 +76,7 @@ void Lexer::processToken()
     }
 }
 
-TokenType Lexer::classifyToken(const std::string &token)
+TokenType Lexer::classifyToken(const string &token)
 {
     if (keywords.count(token))
         return TokenType::KEYWORD;
@@ -78,12 +86,12 @@ TokenType Lexer::classifyToken(const std::string &token)
         return TokenType::PUNCTUATION;
     if (isNumber(token))
         return TokenType::INTEGER;
-    if (token.find('.') != std::string::npos)
+    if (token.find('.') != string::npos)
         return TokenType::FLOAT;
     return TokenType::IDENTIFIER;
 }
 
-bool Lexer::isNumber(const std::string &s)
+bool Lexer::isNumber(const string &s)
 {
-    return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
+    return !s.empty() && all_of(s.begin(), s.end(), ::isdigit);
 }
