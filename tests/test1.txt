@@ -1,0 +1,4 @@
+int a = 5 + 10 * 2; // addition and multiplication
+float b = 3.14 - 1.5;
+
+a = a + b;

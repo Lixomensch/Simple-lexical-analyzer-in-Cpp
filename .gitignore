@@ -3,9 +3,5 @@
 build/**
 !build/.gitkeep
 
-# Ignore files
-src/**
-!src/.gitkeep
-
-include/**
-!include/.gitkeep
+# Ignore executable files
+lexer
