@@ -1,4 +1,4 @@
-# Simple Compiler in C++
+# Simple Lexical Analyzer in C++
 
 ## Overview
 
